@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 //<--------------------------------- Validations : Name 
@@ -6,14 +5,6 @@ const mongoose = require("mongoose");
 const isValidName = function (name) {
   const fnameRegex = /^([a-zA-Z])+$/;
   return fnameRegex.test(name);
-};
-
-//<--------------------------------- Validations : Email  
-
-const isValidEmailId = function (email) {
-  const emailRegex =
-  /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$/;
-  return emailRegex.test(email);
 };
 
 //<--------------------------------- Validations : Password  
@@ -30,13 +21,6 @@ const isValidMobile = function (mobile) {
   /^[0]?[6789]\d{9}$/;
   return MobileRegex.test(mobile);
 };
-//<--------------------------------- Validations : Value
-const isValid = function (value) {
-  if (typeof value === "undefined" || value === null) return false;
-  if (typeof value == "string" && value.trim().length === 0) return false;
-  return true;
-};
-
 //<---------------------------------Validations :  ObjectId 
 
 const isValidObjectId = function (objectId) {
@@ -48,12 +32,7 @@ const isValidPincode = function (pincode) {
   /^[1-9]{1}[0-9]{5}$/;;
   return PinCodeRegex.test(pincode);
 };
-//<--------------------------------- Validations :  PinCode
-const isValidTitle = function (title) {
-  const TitleRegex =
-  /^([a-zA-Z 0-9])+$/;
-  return TitleRegex.test(title);
-};
+
 //<---------------------------------Validations :  AdhR NUMBER
 const isValidAadharNo = function (AadharNo) {
   const TitleRegex =/^[2-9]{1}[0-9]{3}\\s[0-9]{4}\\s[0-9]{4}$/;
@@ -66,5 +45,4 @@ const isValidAge = function (age) {
   return TitleRegex.test(age);
 };
 
-module.exports = {isValidAge,isValidAadharNo, isValid,isValidEmailId,isValidName,isValidPassword,isValidObjectId, isValidMobile,isValidPincode,isValidTitle
-};
+module.exports = {isValidAge,isValidAadharNo,isValidName,isValidPassword,isValidObjectId, isValidMobile,isValidPincode};

@@ -1,22 +1,18 @@
-const slotModel = require("../model/covidslotModel");
-const userModel = require("../model/userModel");
-const errorHandler = require('../errorhandler/errorhandler');
+const slotModel = require("../model/slotModel");
 
 const createSlot = async function (req, res) {
   try {
     let data = req.body;
-    data['Date'] = new Date(data['Date']);
-    if(data['Date'] == "Invalid Date")
-    {
-      return res.status(400).send({ status : false , msg : "please provide date in YYYY-MM-DD Format"})
-    }
-    data["slots"] = [];
+    data.Date = new Date(data.Date)
+    if(data.Date == "Invalid Date")return res.status(400).send({ status : false , msg : "please provide date in YYYY-MM-DD Format"})
+    
+    data.slots = [];
     let startTime = 10;    
     for (let i = 0; i < 7; i++) {
       let x = "00";
       for (let j = 1; j <= 2; j++) {
         {
-          data["slots"].push({ slotsTime: `${startTime}:${x}`, patients: [] });
+          data.slots.push({ slotsTime: `${startTime}:${x}`, users: [] });
           x = "30";
         }
       }
@@ -25,7 +21,7 @@ const createSlot = async function (req, res) {
     const createSlot = await slotModel.create(data);
     return res.status(201).send({ status: true, msg: createSlot });
   } catch (err) {
-    return errorHandler(err, res);
+    return res.status(500).send({msg:err.message})
   }
 };
 const bookSlot = async function (req, res) {
@@ -34,24 +30,25 @@ const bookSlot = async function (req, res) {
     let data = req.body
     let slotsTime = data.slotsTime; 
     if(!slotsTime) return res.status(400).send({status : false , msg : "please provide slot time to BookSlot"})
-    let query = {}
-    let { PinCode , Hospital , ...x } = data
+    let slotData = {}
+    let { PinCode , Hospital} = data
     if(PinCode && Hospital)
     {
-      query['PinCode'] = PinCode
-      query['Hospital'] = Hospital
-    }else { return res.status(400).send({ status : false , msg : " Please enter PinCode and Hospital Name to book slot"})}
-    let slot = await slotModel.findOne(query).lean();  
-    for (let i = 0; i < slot["slots"].length; i++) {
-      if (slotsTime == slot["slots"][i].slotsTime) {
-        if (slot["slots"][i].slotsBooked > 9) {
+      slotData.PinCode= PinCode
+      slotData.Hospital = Hospital
+    }
+    else { return res.status(400).send({ status : false , msg : " Please provide pincode and hospital"})}
+    let slot = await slotModel.findOne(slotData).lean();  
+    for (let i = 0; i < slot.slots.length; i++) {
+      if (slotsTime == slot.slots[i].slotsTime) {
+        if (slot.slots[i].slotsBooked > 9) {
           return res.status(400).send({
             status: false,
-            msg: "slots are full for this timeSlot please try Other time slot",
+            msg: "slot is alreday booked",
           });
         }
-        slot["slots"][i].patients.push(userId);
-        slot["slots"][i].slotsBooked += 1;
+        slot.slots[i].patients.push(userId);
+        slot.slots[i].slotsBooked += 1;
       }
     }
     const slotBook = await slotModel.findOneAndUpdate(
@@ -59,11 +56,10 @@ const bookSlot = async function (req, res) {
       { $set: { ...slot } },
       { runValidators: true }
     );
-    return res
-      .status(201)
-      .send({ status: true, msg: slotBook });
-  } catch (err) {
-    return errorHandler(err, res);
+    return res.status(201).send({ status: true, msg: slotBook });
+  }
+   catch (err) {
+    return res.status(500).send({msg:err.message})
   }
 };
 module.exports = { createSlot, bookSlot };
