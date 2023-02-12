@@ -1,16 +1,22 @@
 {
-  "name": "backend-developer-assignment",
+  "name": "backend_developer",
   "version": "1.0.0",
-  "description": "aa",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "prachi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrachiSharmaPS/backend_developer.git"
+  },
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PrachiSharmaPS/backend_developer/issues"
+  },
+  "homepage": "https://github.com/PrachiSharmaPS/backend_developer#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.8.2"
+    "express": "^4.18.2"
   }
 }
