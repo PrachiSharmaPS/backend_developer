@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router()
-const studentcontroller = require('../controller/studentController')
+const itinerarycontroller = require('../controller/itineraryController')
 
-router.post("/student",studentcontroller.createAndAddStudent)
-router.get("/student",studentcontroller.viewStudent)
-router.delete('/student/:studentId',studentcontroller.deleteStudentSubject)
+router.post("/student",itinerarycontroller.createItinerary)
+router.get("/student",itinerarycontroller.getItinerary)
+router.delete('/student/:studentId',itinerarycontroller.deleteItinerary)
 
 module.exports = router;
