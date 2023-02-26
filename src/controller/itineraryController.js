@@ -1,4 +1,3 @@
-// Import the Itinerary model
 const Itinerary = require('../model/UserItinerary');
 
 // Create a new itinerary
