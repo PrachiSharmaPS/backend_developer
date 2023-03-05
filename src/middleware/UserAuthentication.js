@@ -3,6 +3,7 @@ const { ValidObjectId } = require("../Validation/validation");
 //<-------------------------------------Authentication ------------------------------------->//
 const UserAuthentication = function (req, res, next) {
   try {
+    
     const Bearer = req.headers["authorization"]
 
     if (!Bearer) {
