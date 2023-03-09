@@ -1,18 +1,28 @@
 const express=require('express');
-const mongoose = require('mongoose');
-const route = require('./router/router');
+const con=require('./config');
+const path=require('path');
 const app=express();
+//const multer=require('multer');
+const routes=require('./routes/routes');
 
+//======making accessible to route
+app.use(function(req,res,next){
+    req.con=con;
+    next()
+})
+// const storage=multer.diskStorage({
+//     destination:'./image',
+//     filename:(req,file,cb)=>{
+//         console.log(file)
+//      return   cb(null,Date.now()+path.extname(file.originalname))
+//     },
+// })
+// const upload=multer({storage:storage})
 
-app.use(express.json());
+app.set("view engine","ejs")
+app.use('/',routes)
 
-mongoose.set('strictQuery', false)
-mongoose.connect("mongodb+srv://Avverma:Avverma95766@avverma.2g4orpk.mongodb.net/backend", {
-    useNewUrlParser: true,
-}).then( () => console.log("MongoDb is connected"))
-.catch ( err => console.log(err) )
+// app.post("/upload", upload.single('profile'),uploadImage);
 
-
-app.use('/',route);
-let PORT=3000
-app.listen(PORT, () => console.log(`server port is  ${PORT}`));
+// app.get("/upload",display)
+app.listen(3000)
